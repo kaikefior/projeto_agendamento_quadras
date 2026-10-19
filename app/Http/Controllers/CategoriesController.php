@@ -2,63 +2,62 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categories;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use app\Models\Categories;
+use Illuminate\View\View;
 
 class CategoriesController extends Controller
 {
-   
-    public function index()
+    public function index(): View
     {
-        $categories = categorie::all();
+        $categories = Categories::orderBy('name')->get();
+
         return view('categories.index', compact('categories'));
     }
 
-
-    public function create()
+    public function create(): View
     {
         return view('categories.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        Categorie::create($this->validar($request));
+        Categories::create($this->validateCategory($request));
 
-        return redirect()->route('categories.index') -> with('success', 'Categoria cadastrada com sucesso!');
+        return redirect()->route('categories.index')->with('success', 'Categoria cadastrada com sucesso!');
     }
 
-    public function show(Categorie $categorie)
+    public function show(Categories $category): View
     {
-        return view('categorie.show', compact('categoria'));
+        return view('categories.show', compact('category'));
     }
 
-
-    public function edit(Categorie $categorie)
+    public function edit(Categories $category): View
     {
-        return view('categories.edit', compact('categories'));
+        return view('categories.edit', compact('category'));
     }
 
-
-    public function update(Request $request, string $id)
+    public function update(Request $request, Categories $category): RedirectResponse
     {
-        $categorie->update($this->validate($request));
+        $category->update($this->validateCategory($request));
 
-        return redirect()->route('categorie.index')->with('success', 'Categoria atualizada com sucesso!');
+        return redirect()->route('categories.index')->with('success', 'Categoria atualizada com sucesso!');
     }
 
-
-    public function destroy(Categorie $categorie)
+    public function destroy(Categories $category): RedirectResponse
     {
-        $categorie->delete();
+        $category->delete();
 
-        return redirect()->route('categories.index')->with('success', 'Categoria excluída com sucesso');
+        return redirect()->route('categories.index')->with('success', 'Categoria excluída com sucesso!');
     }
 
-    private function validate(Request $request)
+    /** @return array{name: string, description?: string|null} */
+    private function validateCategory(Request $request): array
     {
         return $request->validate([
             'name' => ['required', 'string', 'max:100'],
-            'description'=> ['nullable', 'string', 'max:1000'],
+            'description' => ['nullable', 'string', 'max:1000'],
         ]);
     }
 }
