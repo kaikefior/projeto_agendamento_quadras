@@ -15,8 +15,23 @@
                     <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
                     </flux:sidebar.item>
-                    <flux:sidebar.item icon="layout-grid" :href="route('categories.index')" :current="request()->routeIs('categories.*')" wire:navigate>
+
+                    <flux:sidebar.item
+                        icon="layout-grid"
+                        :href="route('categories.index')"
+                        :current="request()->routeIs('categories.*')"
+                        wire:navigate
+                    >
                         Categorias
+                    </flux:sidebar.item>
+
+                    <flux:sidebar.item
+                        icon="layout-grid"
+                        :href="route('courts.index')"
+                        :current="request()->routeIs('courts.*')"
+                        wire:navigate
+                    >
+                        Quadras
                     </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
