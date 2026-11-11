@@ -33,6 +33,16 @@
                     >
                         Quadras
                     </flux:sidebar.item>
+
+                    <flux:sidebar.item
+                        icon="layout-grid"
+                        :href="route('inventory.index')"
+                        :current="request()->routeIs('inventory.*')"
+                        wire:navigate
+                    >
+                        Inventário
+                    </flux:sidebar.item>
+
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 

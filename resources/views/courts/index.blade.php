@@ -5,6 +5,7 @@
                 <h1 class="text-2xl font-bold text-zinc-900 dark:text-white">
                     Quadras
                 </h1>
+
                 <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
                     Gerencie suas quadras esportivas.
                 </p>
@@ -27,6 +28,15 @@
             </div>
         @endif
 
+        @if (session('error'))
+            <div
+                role="alert"
+                class="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800 dark:border-red-800 dark:bg-red-950 dark:text-red-200"
+            >
+                {{ session('error') }}
+            </div>
+        @endif
+
         <div class="overflow-x-auto rounded-xl border border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-900">
             <table class="w-full text-left text-sm">
                 <caption class="sr-only">
@@ -39,6 +49,7 @@
                         <th scope="col" class="px-6 py-4">Nome</th>
                         <th scope="col" class="px-6 py-4">Modalidade</th>
                         <th scope="col" class="px-6 py-4">Status</th>
+                        <th scope="col" class="px-6 py-4">Ações</th>
                     </tr>
                 </thead>
 
@@ -48,22 +59,60 @@
                             <td class="px-6 py-4">
                                 {{ $court->id }}
                             </td>
+
                             <td class="px-6 py-4 font-medium text-zinc-900 dark:text-white">
                                 {{ $court->name }}
                             </td>
+
                             <td class="px-6 py-4">
                                 {{ $court->sport_type }}
                             </td>
+
                             <td class="px-6 py-4">
                                 {{ $court->status }}
+                            </td>
+
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <a
+                                        href="{{ route('courts.show', $court) }}"
+                                        class="font-medium text-emerald-700 hover:underline dark:text-emerald-400"
+                                    >
+                                        Ver
+                                    </a>
+
+                                    <a
+                                        href="{{ route('courts.edit', $court) }}"
+                                        class="font-medium text-blue-700 hover:underline dark:text-blue-400"
+                                    >
+                                        Editar
+                                    </a>
+
+                                    <form
+                                        action="{{ route('courts.destroy', $court) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('Deseja excluir esta quadra?')"
+                                    >
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button
+                                            type="submit"
+                                            class="cursor-pointer font-medium text-red-700 hover:underline dark:text-red-400"
+                                        >
+                                            Excluir
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-6 py-12 text-center">
+                            <td colspan="5" class="px-6 py-12 text-center">
                                 <p class="font-medium text-zinc-900 dark:text-white">
                                     Nenhuma quadra cadastrada.
                                 </p>
+
                                 <p class="mt-2 text-zinc-500 dark:text-zinc-400">
                                     Clique em “Nova quadra” para começar.
                                 </p>
