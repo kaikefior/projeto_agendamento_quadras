@@ -7,16 +7,20 @@
                 </h1>
 
                 <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-                    Gerencie suas quadras esportivas.
+                    {{ auth()->user()->is_admin
+                        ? 'Gerencie suas quadras esportivas.'
+                        : 'Consulte as quadras esportivas.' }}
                 </p>
             </div>
 
-            <a
-                href="{{ route('courts.create') }}"
-                class="inline-flex items-center justify-center rounded-lg bg-emerald-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-800"
-            >
-                + Nova quadra
-            </a>
+            @if (auth()->user()->is_admin)
+                <a
+                    href="{{ route('courts.create') }}"
+                    class="inline-flex items-center justify-center rounded-lg bg-emerald-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-800"
+                >
+                    + Nova quadra
+                </a>
+            @endif
         </div>
 
         @if (session('success'))
@@ -81,28 +85,30 @@
                                         Ver
                                     </a>
 
-                                    <a
-                                        href="{{ route('courts.edit', $court) }}"
-                                        class="font-medium text-blue-700 hover:underline dark:text-blue-400"
-                                    >
-                                        Editar
-                                    </a>
-
-                                    <form
-                                        action="{{ route('courts.destroy', $court) }}"
-                                        method="POST"
-                                        onsubmit="return confirm('Deseja excluir esta quadra?')"
-                                    >
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <button
-                                            type="submit"
-                                            class="cursor-pointer font-medium text-red-700 hover:underline dark:text-red-400"
+                                    @if (auth()->user()->is_admin)
+                                        <a
+                                            href="{{ route('courts.edit', $court) }}"
+                                            class="font-medium text-blue-700 hover:underline dark:text-blue-400"
                                         >
-                                            Excluir
-                                        </button>
-                                    </form>
+                                            Editar
+                                        </a>
+
+                                        <form
+                                            action="{{ route('courts.destroy', $court) }}"
+                                            method="POST"
+                                            onsubmit="return confirm('Deseja excluir esta quadra?')"
+                                        >
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button
+                                                type="submit"
+                                                class="cursor-pointer font-medium text-red-700 hover:underline dark:text-red-400"
+                                            >
+                                                Excluir
+                                            </button>
+                                        </form>
+                                    @endif
                                 </div>
                             </td>
                         </tr>
@@ -114,7 +120,9 @@
                                 </p>
 
                                 <p class="mt-2 text-zinc-500 dark:text-zinc-400">
-                                    Clique em “Nova quadra” para começar.
+                                    {{ auth()->user()->is_admin
+                                        ? 'Clique em “Nova quadra” para começar.'
+                                        : 'Volte em breve para consultar as quadras.' }}
                                 </p>
                             </td>
                         </tr>

@@ -1,4 +1,3 @@
-
 <x-layouts::app title="Detalhes da quadra">
     <section lang="pt-BR" class="mx-auto w-full max-w-2xl space-y-6">
         <h1 class="text-2xl font-bold text-zinc-900 dark:text-white">
@@ -60,12 +59,14 @@
                 Voltar
             </a>
 
-            <a
-                href="{{ route('courts.edit', $court) }}"
-                class="inline-flex items-center justify-center rounded-lg bg-emerald-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-800"
-            >
-                Editar quadra
-            </a>
+            @if (auth()->user()->is_admin)
+                <a
+                    href="{{ route('courts.edit', $court) }}"
+                    class="inline-flex items-center justify-center rounded-lg bg-emerald-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-800"
+                >
+                    Editar quadra
+                </a>
+            @endif
         </div>
     </section>
 </x-layouts::app>
